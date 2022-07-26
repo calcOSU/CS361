@@ -38,6 +38,34 @@ will print:
 ['Military Press', 'Seated Military Press', 'Upright Row', 'Arnold Press', 'Landmines']
 ```
 
+You can put in 'demo' as a parameter from the command line to show a brief demonstration of how the data will be returned:
+```
+client.py 'demo'
+```
+Returns a number of different possibilities.  As you can see, if additional arguments are given that do not match an exercise, they will be ignored.  The arguments can be given in any order.  If not enough arguments are given, no exercises will be returned.
+```
+For the input list of: ['compound', 'upper', 'shoulders']
+The result is: ['Military Press', 'Seated Military Press', 'Upright Row', 'Arnold Press', 'Landmines']
+
+For the input list of: ['shoulders', 'upper', 'compound']
+The result is: ['Military Press', 'Seated Military Press', 'Upright Row', 'Arnold Press', 'Landmines']
+
+For the input list of: ['blank', 'blue']
+The result is: False
+
+For the input list of: ['shoulders', 'upper', 'compound', 'orange']
+The result is: ['Military Press', 'Seated Military Press', 'Upright Row', 'Arnold Press', 'Landmines']
+
+For the input list of: ['blank', '', 'three', 3, 'four', 'orange']
+The result is: False
+
+For the input list of: [5, 3, 'compound', 'orange', 2, 'green', 1, 'upper', 'four', 'five', 3, 'shoulders', 'hey']
+The result is: ['Military Press', 'Seated Military Press', 'Upright Row', 'Arnold Press', 'Landmines']
+
+For the input list of: ['hey', 'shoulders', 3, 'five', 'four', 'upper', 1, 'green', 2, 'orange', 'compound', 3, 5]
+The result is: ['Military Press', 'Seated Military Press', 'Upright Row', 'Arnold Press', 'Landmines']
+```
+
 
 ## UML Diagram
 A basic UML diagram for this microservice:
