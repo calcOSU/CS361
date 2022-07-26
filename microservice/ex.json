@@ -1,0 +1,99 @@
+{
+    "compound":{
+        "upper":{
+            "chest":[
+                "Barbell Bench Press",
+                "Incline Bench Press",
+                "Decline Bench Press",
+                "Dumbbell Bench Press",
+                "Incline Dumbbell Bench Press",
+                "Decline Dumbbell Bench Press"
+            ],
+            "back":[
+                "Barbell Bent Over Row",
+                "Dumbbell Bent Over Row",
+                "Pull Up",
+                "Chin Up",
+                "Lat Pull Down"
+            ],
+            "shoulders":[
+                "Military Press",
+                "Seated Military Press",
+                "Upright Row",
+                "Arnold Press",
+                "Landmines"
+            ]        
+            },
+            "lower":{
+                "legs":[
+                    "Deadlift",
+                    "Romanian Deadlift",
+                    "Sumo Deadlift",
+                    "Squat",
+                    "Front Squat",
+                    "Lunges",
+                    "Bulgarian Split Squat",
+                    "Leg Press",
+                    "Box Squat"
+                ]
+            }
+        },
+    "accessory":{
+        "upper":{
+            "chest":[
+                "Dips",
+                "Cable Fly",
+                "Dumbbell Fly",
+                "Single Arm Dumbbell Press",
+                "Pullovers",
+                "Close Grip Bench Press"                    
+            ],
+            "back":[
+                "Seated Cable Row",
+                "One Arm Bent Over Row",
+                "Incline Row",
+                "Single Arm Cable Lat Pull",
+                "Face Pull",
+                "Shrugs",
+                "Reverse Fly",
+                "Back Extension"
+            ],
+            "shoulders":[
+                "Front Dumbbell Raise",
+                "Lateral Dumbbell Raise",
+                "Rear Dumbbell Raise",
+                "Lying Rear Delt Raise"
+            ],
+            "biceps":[
+                "Barbell Curl",
+                "Drag Curl",
+                "Hammer Curl",
+                "Incline Curl"
+            ],
+            "triceps":[
+                "Skull Crusher",
+                "Bent-over Triceps Extension",
+                "Triceps Dips",
+                "Cable Pushdown"
+            ]
+        },
+        "lower":{
+            "legs":[
+                "Hip Thrusts",
+                "Single Leg Stiff-leg Deadlift",
+                "Side Lunge",
+                "Walking Lunge",
+                "Rack Pulls",
+                "Glute Kickback",
+                "Rear Lunge",
+                "Cable Hip Extensions",
+                "Good Mornings"
+            ],
+            "calves":[
+                "Dumbbell Calf Raise",
+                "Seated Calf Raise",
+                "Smith Machine Calf Raise"
+            ]
+        }
+    }
+}
