@@ -4,6 +4,7 @@
 import threading
 import json
 import socket
+import random
 
 PORT = 5050
 FORMAT = 'utf-8'
@@ -109,7 +110,7 @@ def get_result(input_list):
         results.extend(data_holder)
     else: # we still haven't gotten to the 'floor' of the json file
         return False 
-    return results
+    return results[random.randint(0,len(results))]
 
 if __name__ == "__main__":
     start()
