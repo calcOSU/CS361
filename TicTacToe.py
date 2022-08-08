@@ -16,6 +16,7 @@ class TicTacToeGame():
         for _ in range(3):
             self.board.append([None for _ in range(3)])
         self.turnDict = {0:'X',1:'O'}
+        self.moves = []
 
     def __str__(self):
         """
@@ -59,6 +60,18 @@ class TicTacToeGame():
         else:
             self.board[selection[0]][selection[1]] = 'O'
             self.turn = 0
+        if self.turn == 1:
+            self.moves.append(('X',selection))
+        else:
+            self.moves.append(('O',selection))
+
+    def undo(self):
+        """
+        a method to undo the most recent move
+        :return:
+        """
+        last_move = self.moves.pop()
+        self.board[last_move[1][0]][last_move[1][1]] = None
 
     def win_check(self):
         """

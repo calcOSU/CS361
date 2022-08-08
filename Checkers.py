@@ -23,6 +23,7 @@ class Checkers():
         self.turn = 0
         self.moves = list()
         self.board = list()
+        self.more_jumps = False
         for _ in range(8):
             self.board.append([None for _ in range(8)])
         for row in range(3):
@@ -64,6 +65,10 @@ class Checkers():
             if row < len(self.board) -1:
                 board_str += '\n' +"   " + '_' * 31
         return board_str
+
+    def show_turn(self):
+        """A method to return whose turn it is in string form"""
+        return 'Red' if self.turn == 0 else 'Black'
 
     def build_game(self,cell):
         """The purpose of this function is to build a game from a list of moves (for example, generated from the moves
@@ -114,18 +119,67 @@ class Checkers():
             self.normal_move(source,destination)
             self.turn = 0 if self.turn == 1 else 1
             self.king_me(destination)
+            return True
         elif abs(source[0]-destination[0]) == 2:
             self.jump_move(source,destination)
             current = destination
             while self.find_jump_moves(current):
-                self.extended_jump(current)
+                self.extended_jump2(current)
             self.king_me(destination)
             self.game_end_check()
+            return True
         else:
             print('not valid')
             return False
 
+    def switch_turns(self):
+        """
+        A method to switch turns
+        :return:
+        """
+        self.turn = 1 if self.turn == 0 else 0
+
+
+    def move1(self,source,destination):
+        """a method to combine jump moves and normal moves, and to be used with a GUI
+        ::todo:: issue seems to be there are 3 outputs for a move- valid move, others turn, invalid move, valid jump and another turn available"""
+        if self.more_jumps:
+            if source == destination:
+                # allows player to choose to not jump by selecting their own square
+                self.more_jumps = False
+                self.switch_turns()
+                return True
+            else:
+                if destination in self.find_jump_moves(source):
+                    self.jump_move(source,destination)
+                    self.king_me(destination)
+                    if self.find_jump_moves(destination):
+                        return True
+                    else:
+                        self.switch_turns()
+                        self.more_jumps = False
+                        return True
+        elif destination in self.find_normal_moves(source):
+            self.move(source,destination)
+            self.king_me(destination)
+            self.switch_turns()
+        elif destination in self.find_jump_moves(source):
+            self.jump_move(source,destination)
+            self.king_me(destination)
+            if self.find_jump_moves(destination):
+                self.more_jumps = True
+                return True
+            else:
+                self.switch_turns()
+                return True
+        else:
+            return False
+
     def game_end_check(self):
+        """
+        A method to determine if one team has won, or if a tie has occurred
+        :return:
+        """
         tie = True
         red_wins = True
         black_wins = True
@@ -153,6 +207,20 @@ class Checkers():
         if tie:
             print('tie')
             return 3
+        return False
+
+    def extended_jump2(self,source,destination):
+        """a method for multiple jumps but to be used through a GUI
+        no input commands"""
+        if destination == source:
+            return True
+        if destination in self.find_jump_moves(source):
+            self.board[destination[0]][destination[1]] = self.board[source[0]][source[1]]
+            self.board[source[0]][source[1]] = None
+            jumped_row = int((destination[0]-source[0]) / 2)
+            jumped_col = int((destination[1]-source[1]) / 2)
+            self.board[jumped_row][jumped_col] = None
+            return True
         return False
 
     def extended_jump(self,source):
@@ -208,13 +276,8 @@ class Checkers():
             jumped_row = int((destination[0] + source[0])/2)
             jumped_col = int((destination[1] + source[1])/2)
             self.board[jumped_row][jumped_col] = None
-            if self.find_jump_moves(destination):
-                print('more jumps possible')
-                return True
-            else:
-                self.turn = 0 if self.turn == 1 else 1
-                self.king_me(destination)
-                self.moves.append((source, destination, (jumped_row,jumped_col)))
+            self.king_me(destination)
+            self.moves.append((source, destination, (jumped_row,jumped_col)))
         else:
             print(f'{source} to {destination} is not a valid jump move')
             return False
@@ -324,7 +387,7 @@ class Checkers():
 
 if __name__ == "__main__":
     game = Checkers()
-    # game.game_flow()
+    game.game_flow()
     game.move((2,2),(3,3))
     game.move((5,1),(4,2))
     game.move((3,3),(5,1))

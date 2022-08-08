@@ -11,7 +11,6 @@ import json
 
 game = TicTacToe.TicTacToeGame()
 root = tk.Tk()
-root.title(f"{game.showTurn()}'s turn")
 root.columnconfigure(1, weight=1)
 turn_tracker = tk.Label(
     root, text = f"{game.showTurn()}'s turn",
@@ -139,6 +138,13 @@ def pause_game(button_list):
         for button in button_list:
             button.state(['!disabled'])
 
+def undo():
+    """
+    a function to undo the last move made
+    """
+    game.undo()
+    update_game_screen()
+
 def highlight_message(button_list):
     """
     A method to display a simple method before highlighting open spaces
@@ -256,6 +262,17 @@ def open_game(file_name, window):
         window.destroy()
         display_message(text_box, f'loaded game {file_name}')
 
+def update_game_screen():
+    """A method to update the buttons once the underlying game has been changed"""
+    grid_list = list()
+    for x in range(3):
+        for y in range(3):
+            grid_list.append((x, y))
+    for index, button in enumerate(button_list):
+        button['text'] = f'{show(grid_list[index])}'
+        print(show((1, 0)))
+    updateTitle()
+
 def forfeit_game():
     rsp = messagebox.askyesno('Forfeit', 'Are you sure you want to forfeit? You\'ll lose the game!')
     if rsp:
@@ -264,7 +281,7 @@ def forfeit_game():
 
 
 controls.columnconfigure(1, weight=1)
-undo_button = ttk.Button(controls, text='Undo').grid()
+undo_button = ttk.Button(controls, text='Undo', command = undo).grid()
 forfeit_button = ttk.Button(controls, text = 'Forfeit', command = forfeit_game).grid()
 new_game_button = ttk.Button(controls, text = 'New game', command = newGame).grid()
 save_button = ttk.Button(controls, text= 'Save', command = save_game).grid()
