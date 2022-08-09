@@ -248,12 +248,13 @@ class TicTacToeUI(tk.Tk):
     def load_game(self):
         """
         A function to load a previous saved game
+        # reference: https://stackoverflow.com/questions/10865116/tkinter-creating-buttons-in-for-loop-passing-command-arguments
         :return:
         """
         t = tk.Toplevel(self)
         saved_files = [x for x in os.listdir('TicTacToe_saves') if x[-4:] == 'json']
         for save in saved_files:
-            ttk.Button(t, text = save, command = lambda: self.open_game(save,t)).grid()
+            ttk.Button(t, text = save, command = lambda save=save: self.open_game(save,t)).grid()
 
 
     def open_game(self,file_name, window):

@@ -16,8 +16,8 @@ class MainWindow(tk.Tk):
     def __init__(self):
         """initialize a window"""
         super().__init__()
-        self.button_list_player1 = list()
-        self.button_list_player2 = list()
+        self.directions = tk.Label(self,text = "Both players must login to unlock the play buttons",font = ("Arial",14))
+        self.directions.grid(row= 0, column = 0, columnspan = 2)
         self.player1_options = ttk.LabelFrame(self, text = "Player 1 options")
         self.player2_options = ttk.LabelFrame(self, text="Player 2 options")
         self._button_setups()
@@ -28,70 +28,80 @@ class MainWindow(tk.Tk):
 
     def _button_setups(self):
         """A method to initialize all of the buttons in this window"""
+        self.button_list_player1 = list()
+        self.button_list_player2 = list()
         self.DEFAULT_BUTTON_HEIGHT = 5
         self.DEFAULT_BUTTON_WIDTH = 15
         self._button_setup_player1()
         self._button_setup_player2()
-        self.player1_options.grid(row=0, column = 0)
-        self.player2_options.grid(row=0, column = 1)
+        self.player1_options.grid(row=1, column = 0)
+        self.player2_options.grid(row=1, column = 1)
 
     def _button_setup_player1(self):
         """
         Set up the basic button functionality
         :return:
         """
+        self.p1_directions = tk.Label(self.player1_options,text = "Please login in to unlock the other play buttons",
+wraplength=200, justify="center",  width = self.DEFAULT_BUTTON_WIDTH*2, height = self.DEFAULT_BUTTON_HEIGHT)
+        self.p1_directions.grid(row = 0, column = 0)
+
         new_user = tk.Button(self.player1_options, text = "New User", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = self.new_user_creation)
-        new_user.grid(row = 0, column = 0)
+        new_user.grid(row = 1, column = 0)
         self.button_list_player1.append(new_user)
 
-        existing_user = tk.Button(self.player1_options, text = "Existing User", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = lambda: self.login(self.player1_auth))
+        existing_user = tk.Button(self.player1_options, text = "Existing User", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = lambda: self.login(1))
         self.button_list_player1.append(existing_user)
-        existing_user.grid(row = 1, column = 0)
+        existing_user.grid(row = 2, column = 0)
 
         guest_login = tk.Button(self.player1_options, text = "Guest Player", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = lambda: self.guest_user(1))
         self.button_list_player1.append(guest_login)
-        guest_login.grid(row = 2, column = 0)
+        guest_login.grid(row = 3, column = 0)
 
         tic_tac_toe = tk.Button(self.player1_options, text = "Play Tic Tac Toe", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = self.play_tictactoe, state = "disabled")
         self.button_list_player1.append(tic_tac_toe)
-        tic_tac_toe.grid(row = 3, column = 0)
+        tic_tac_toe.grid(row = 4, column = 0)
 
         checkers = tk.Button(self.player1_options, text = "Play Checkers", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = self.play_checkers, state = "disabled")
         self.button_list_player1.append(checkers)
-        checkers.grid(row = 4, column = 0)
+        checkers.grid(row = 5, column = 0)
 
         elo = tk.Button(self.player1_options, text = "View ELO", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = lambda: self.view_elo(1), state = "disabled")
         self.button_list_player1.append(elo)
-        elo.grid(row = 5, column = 0)
+        elo.grid(row = 6, column = 0)
 
     def _button_setup_player2(self):
         """
         Set up the basic button functionality
         :return:
         """
+        self.p2_directions = tk.Label(self.player2_options,text = "Please login in to unlock the other play buttons",
+wraplength=200, justify="center", width = self.DEFAULT_BUTTON_WIDTH*2, height = self.DEFAULT_BUTTON_HEIGHT)
+        self.p2_directions.grid(row = 0, column = 0)
+
         new_user = tk.Button(self.player2_options, text = "New User", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = self.new_user_creation)
-        new_user.grid(row = 0, column = 0)
+        new_user.grid(row = 1, column = 0)
         self.button_list_player2.append(new_user)
 
-        existing_user = tk.Button(self.player2_options, text = "Existing User", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = lambda: self.login(self.player1_auth))
+        existing_user = tk.Button(self.player2_options, text = "Existing User", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = lambda: self.login(2))
         self.button_list_player2.append(existing_user)
-        existing_user.grid(row = 1, column = 0)
+        existing_user.grid(row = 2, column = 0)
 
         guest_login = tk.Button(self.player2_options, text = "Guest Player", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = lambda: self.guest_user(2))
         self.button_list_player2.append(guest_login)
-        guest_login.grid(row = 2, column = 0)
+        guest_login.grid(row = 3, column = 0)
 
         tic_tac_toe = tk.Button(self.player2_options, text = "Play Tic Tac Toe", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = self.play_tictactoe, state = "disabled")
         self.button_list_player2.append(tic_tac_toe)
-        tic_tac_toe.grid(row = 3, column = 0)
+        tic_tac_toe.grid(row = 4, column = 0)
 
         checkers = tk.Button(self.player2_options, text = "Play Checkers", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = self.play_checkers, state = "disabled")
         self.button_list_player2.append(checkers)
-        checkers.grid(row = 4, column = 0)
+        checkers.grid(row = 5, column = 0)
 
         elo = tk.Button(self.player2_options, text = "View ELO", height = self.DEFAULT_BUTTON_HEIGHT, width = self.DEFAULT_BUTTON_WIDTH, command = lambda: self.view_elo(2), state = "disabled")
         self.button_list_player2.append(elo)
-        elo.grid(row = 5, column = 0)
+        elo.grid(row = 6, column = 0)
 
     def new_user_creation(self):
         """a method generate a window to create a new user account
@@ -146,14 +156,15 @@ class MainWindow(tk.Tk):
             self.new_user_window.destroy()
 
 
-    def login(self, player_auth):
+    def login(self, player_to_authenticate):
         """
         A method to generate a window to allow an existing user to login
         Referenced: https://pythonexamples.org/python-tkinter-login-form/
         :return:
         """
+
         self.login_window = tk.Toplevel(self)
-        self.new_user_window.title('Login')
+        self.login_window.title('Login')
 
         username_label = tk.Label(self.login_window, text = "Enter User Name").grid(row = 0, column = 0)
         self.username_login = tk.StringVar()
@@ -165,10 +176,10 @@ class MainWindow(tk.Tk):
         password_entry = tk.Entry(self.login_window, textvariable = self.password_login, show = "*")
         password_entry.grid(row=1,column = 1)
 
-        login_button = tk.Button(self.login_window, text = "login", command = self.validate_login)
+        login_button = tk.Button(self.login_window, text = "login", command = lambda: self.validate_login(player_to_authenticate))
         login_button.grid(row = 2, column = 0)
 
-    def validate_login(self, player_auth):
+    def validate_login(self, player_to_authenticate):
         """validates the login of username and password"""
         username = self.username_login.get()
         password = self.password_login.get()
@@ -176,24 +187,31 @@ class MainWindow(tk.Tk):
             user_password_combo = json.load(f)
         if user_password_combo[username]:
             if user_password_combo[username][0] == password:
-                player_auth = True
-                if player_auth == self.player1_auth:
+                if player_to_authenticate == 1:
                     self.player1_username = username
-                else:
+                    self.player1_auth = True
+                elif player_to_authenticate ==2:
                     self.player2_username = username
+                    self.player2_auth = True
+                else:
+                    print('Invalid player to authenticate received')
                 self.unlock_buttons()
 
     def unlock_buttons(self):
         """A method to enable the locked buttons"""
         if self.player1_auth:
             self.button_list_player1[5]['state']= 'active'
+            self.p1_directions['text'] = f'Logged in as {self.player1_username}'
         if self.player2_auth:
             self.button_list_player2[5]['state'] = 'active'
+            self.p2_directions['text'] = f'Logged in as {self.player2_username}'
         if self.player2_auth and self.player1_auth:
+            self.directions['text'] = 'Select a game to play'
             self.button_list_player2[3]['state'] = 'active'
             self.button_list_player2[4]['state'] = 'active'
             self.button_list_player1[3]['state'] = 'active'
             self.button_list_player1[4]['state'] = 'active'
+
 
 
 
@@ -236,14 +254,18 @@ class MainWindow(tk.Tk):
         elif player == 2:
             user = self.player2_username
         user_elo = user_data[user]
-        self.display_elo(user_elo)
+        self.display_elo(user,user_elo)
 
-    def display_elo(self,elo_data):
+    def display_elo(self,user, elo_data):
         self.elo_window = tk.Toplevel(self)
+        self.elo_window.geometry('200x150')
         self.elo_window.title('ELO Data')
-        tictactoe_elo = tk.Label(self.elo_window,text = f'Tic Tac Toe ELO: {elo_data[1]}').grid(row = 0, column = 0)
-        checkers_elo = tk.Label(self.elo_window,text = f'Checkers ELO: {elo_data[2]}').grid(row = 1, column = 0)
-        chess_elo = tk.Label(self.elo_window, text=f'Chess ELO: {elo_data[3]}').grid(row=2, column=0)
+        tk.Label(self.elo_window,text =f"ELO data for {user}:").grid(row=0, column = 0, padx = 50)
+        elo_frame = ttk.Frame(self.elo_window)
+        tictactoe_elo = tk.Label(elo_frame,text = f'Tic Tac Toe ELO: {elo_data[1]}').grid(row = 0, column = 0)
+        checkers_elo = tk.Label(elo_frame,text = f'Checkers ELO: {elo_data[2]}').grid(row = 1, column = 0)
+        chess_elo = tk.Label(elo_frame, text=f'Chess ELO: {elo_data[3]}').grid(row=2, column=0)
+        elo_frame.grid(row=1, column = 0, padx = 50)
 
 if __name__ == "__main__":
     main_window = MainWindow()
@@ -253,5 +275,5 @@ if __name__ == "__main__":
 # reference:
 # https://pythonexamples.org/python-tkinter-login-form/
 # https://docs.python.org/3/library/tkinter.messagebox.html
-
+# https://stackoverflow.com/questions/11949391/how-do-i-use-tkinter-to-create-line-wrapped-text-that-fills-the-width-of-the-win
 
