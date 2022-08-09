@@ -4,7 +4,6 @@
 
 class Piece():
     def __init__(self, side):
-
         self.side = side
         if self.side == 0:
             self.color = "Red"
@@ -15,8 +14,10 @@ class Piece():
         self.king = False
 
     def __str__(self):
-        return self.color[0]
-
+        res = self.color[0]
+        if self.king:
+            res = "*"+res+"*"
+        return res
 
 class Checkers():
     def __init__(self):
@@ -24,8 +25,13 @@ class Checkers():
         self.moves = list()
         self.board = list()
         self.more_jumps = False
+        self.game_end = False
         for _ in range(8):
             self.board.append([None for _ in range(8)])
+        self._board_setup()
+
+    def _board_setup(self):
+        """A method for setting up a new board"""
         for row in range(3):
             for col in range(8):
                 if row % 2 == 0:
@@ -66,6 +72,14 @@ class Checkers():
                 board_str += '\n' +"   " + '_' * 31
         return board_str
 
+    def fresh_board(self):
+        """Create a fresh board"""
+        self.__init__()
+
+    def admin_move(self,source,piece):
+        """a method to make an administrative move, changing source square to piece"""
+        self.board[source[0]][source[1]] = piece
+
     def show_turn(self):
         """A method to return whose turn it is in string form"""
         return 'Red' if self.turn == 0 else 'Black'
@@ -75,6 +89,47 @@ class Checkers():
         of a previous game
         ::TODO:: write this function, consider challenge of extended jumps"""
         pass
+
+    def export_game(self):
+        """Exports the current board status and turn as a tuple"""
+        board_rep = list()
+        for row in self.board:
+            rep_row = list()
+            for col in range(len(self.board)):
+                if row[col]:
+                    rep_row.append(str(row[col]))
+                else:
+                    rep_row.append(None)
+            board_rep.append(rep_row)
+        return (self.turn,board_rep)
+
+    def piece_generator(self,str_input):
+        """a method to create a piece based on a string representation"""
+        if str_input == 'R':
+            return Piece(0)
+        elif str_input == 'B':
+            return Piece(1)
+        elif str_input == '*R*':
+            res = Piece(0)
+            res.king = True
+            return res
+        elif str_input == '*B*':
+            res = Piece(1)
+            res.king = True
+            return res
+        else:
+            return None
+
+    def import_game(self, import_tuple):
+        """
+        Receives a tuple consisting of which side turn it is as well as a board representation and regenerates the board
+        :param import_tuple:
+        :return:
+        """
+        self.turn = import_tuple[0]
+        for row in range(len(import_tuple[1])):
+            for col in range(len(import_tuple[1][row])):
+                self.board[row][col] = self.piece_generator(import_tuple[1][row][col])
 
     def board_cell(self, cell):
         """ returns the piece at a given cell"""
@@ -137,12 +192,20 @@ class Checkers():
         A method to switch turns
         :return:
         """
-        self.turn = 1 if self.turn == 0 else 0
+        if self.turn == 1:
+            self.turn = 0
+        else:
+            self.turn = 1
+
+    def move_validation(self):
+        pass
 
 
     def move1(self,source,destination):
         """a method to combine jump moves and normal moves, and to be used with a GUI
         ::todo:: issue seems to be there are 3 outputs for a move- valid move, others turn, invalid move, valid jump and another turn available"""
+        if self.turn != self.board_cell(source).side:
+            return False
         if self.more_jumps:
             if source == destination:
                 # allows player to choose to not jump by selecting their own square
@@ -162,7 +225,6 @@ class Checkers():
         elif destination in self.find_normal_moves(source):
             self.move(source,destination)
             self.king_me(destination)
-            self.switch_turns()
         elif destination in self.find_jump_moves(source):
             self.jump_move(source,destination)
             self.king_me(destination)
@@ -289,9 +351,11 @@ class Checkers():
         if self.board_cell(source).side == 0:
             if source[0] == len(self.board) - 1:
                 self.board_cell(source).king = True
+                self.board_cell(source).directions = [-1,1]
         else:
             if source[0] == 0:
                 self.board_cell(source).king = True
+                self.board_cell(source).directions = [-1,1]
 
     def find_jump_moves(self,source):
         """A method to find all possible jump moves for a given piece"""
@@ -325,9 +389,9 @@ class Checkers():
         possible_moves = list()
         for row_change in piece.directions:
             new_row = source[0] + row_change
-            if 0 < new_row < len(self.board):
+            if 0 <= new_row < len(self.board):
                 for new_col in [source[1] + 1, source[1] - 1]:
-                    if 0 < new_col < len(self.board[0]):
+                    if 0 <= new_col < len(self.board[0]):
                         if self.board[new_row][new_col] is None:
                             possible_moves.append((new_row, new_col))
             else:
